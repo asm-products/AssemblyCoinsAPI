@@ -9,16 +9,9 @@ def blockjson(blockn):
   b=a.content
   return str(b)
 
-
 @app.route('/')
 def hello():
-    a=requests.get('http://blockchain.info/block-index/0?format=json')
-    b=a.content
-    return str(b)
+    return 'Hello World!'
 
-
-@app.route('/', methods=['POST'])
-def hello():
-    blockn=request.form['block_height']
-    #email=request.form['youremail']
-    return blockjson(blockn)
+if __name__ == '__main__':
+    app.run()
