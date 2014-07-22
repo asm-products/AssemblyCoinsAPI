@@ -13,5 +13,9 @@ def blockjson(blockn):
 def hello():
     return 'Hello World!'
 
+@app.route('/about')
+def about():
+  return blockjson(300)
+
 if __name__ == '__main__':
     app.run()
