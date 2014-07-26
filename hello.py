@@ -4,6 +4,8 @@ from flask import request
 import requests
 import json
 
+import worker
+
 app = Flask(__name__)
 
 def blockjson(blockn):
@@ -13,7 +15,7 @@ def blockjson(blockn):
 
 @app.route('/')
 def hello():
-    return 'Hello World!'
+    return 'Spectrum Ops - Alpha 7 Secrect Project: Code Magnum'
 
 @app.route('/block', methods=['POST'])
 def block():
