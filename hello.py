@@ -5,7 +5,7 @@ import requests
 import json
 
 import bitsource
-import worker
+#import worker
 import trader
 
 app = Flask(__name__)
