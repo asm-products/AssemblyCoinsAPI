@@ -15,6 +15,10 @@ def blockjson(blockn):
   b=a.content
   return str(b)
 
+@app.route('/')
+def something():
+  return "Hello there!"
+
 @app.route('/opreturns/<blockn>')
 def hello():
     a=bitsource.op_return_in_block(blockn)
