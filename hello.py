@@ -4,7 +4,9 @@ from flask import request
 import requests
 import json
 
+import bitsource
 import worker
+import trader
 
 app = Flask(__name__)
 
@@ -13,9 +15,10 @@ def blockjson(blockn):
   b=a.content
   return str(b)
 
-@app.route('/')
+@app.route('/opreturns/<blockn>')
 def hello():
-    return 'Spectrum Ops - Alpha 7 Secrect Project: Code Magnum'
+    a=bitsource.op_return_in_block(blockn)
+    return str(a)
 
 @app.route('/block', methods=['POST'])
 def block():
