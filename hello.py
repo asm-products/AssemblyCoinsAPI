@@ -20,7 +20,7 @@ def something():
   return "Hello there!"
 
 @app.route('/opreturns/<blockn>')
-def hello():
+def hello(blockn):
     a=bitsource.op_return_in_block(blockn)
     return str(a)
 
