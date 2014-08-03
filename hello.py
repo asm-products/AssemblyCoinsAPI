@@ -20,15 +20,15 @@ def something():
   return "Hello there!"
 
 @app.route('/opreturns/<blockn>')
-def hello(blockn):
-    a=bitsource.op_return_in_block(blockn)
-    return str(a)
+def opreturns_in_block(blockn=None):
+    print blockn
+    blockn=int(blockn)
+    message=bitsource.op_return_in_block(blockn)
+    return str(message)
 
-@app.route('/block', methods=['POST'])
-def block():
-    n=request.form['block_height']
-    print str(n)
-    return str(blockjson(n))
+@app.route('/<blockn>')
+def blockj(blockn=None):
+  return blockjson(blockn)
 
 @app.route('/getpersonbyid', methods = ['POST'])
 def getPersonById():
