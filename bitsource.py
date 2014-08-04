@@ -1,6 +1,7 @@
 import requests
 import json
 import time
+import leb128
 
 node_url='127.0.0.1'#'71.198.63.116'#'199.188.192.144'#
 node_port='8332'
@@ -31,7 +32,7 @@ def tx_lookup(txhash):
    c=connect('getrawtransaction',[txhash,1])
    return c
 
-def tx_inputs(txhash):
+def tx_inputs(txhash, dest_address):
   txdata=tx_lookup(txhash)
 
   global prevtxids
@@ -58,6 +59,7 @@ def tx_inputs(txhash):
       f={}
       f['address']=address
       f['amount']=amount
+      f['txid']=a[0]
       answer['inputs'].append(f)
   else:
     answer['block']=prevtxids[0]
@@ -106,10 +108,21 @@ def op_return_in_block(n):
   for tx in txhashes:
     m=read_tx(tx)
     if not m==-1:
-      messages.append(read_tx(tx))
+      messages.append([tx,read_tx(tx)])
   return messages
+
+def parse_colored_tx(metadata):
+  hexmetadata=metadata.encode('hex')
+  opcode=metadata[0:2]
+  if opcode=='OA': #then OA
+      version_number=metadata[2:4].encode('hex')
+      quantity_count=metadata[4:5].encode('hex')
+
+
+
 
 
 t='fff2525b8931402dd09222c50775608f75787bd2b87e56995a7bdd30f79702c4'
 tt='38bddbe81111a6209f87eb59d6a6ac019d07a4d90dcc2f361b6a81eb1bafdb89'
 mt='3a14926cd9a77d7e11de98437743404aefc642db262e4ba4721354b1b2221bea'
+q='f4b0784b089b766df0642e67918646df09e946f470c524817b3873a82651a02c'
