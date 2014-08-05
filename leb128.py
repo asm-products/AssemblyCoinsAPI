@@ -1,3 +1,10 @@
+import hashlib
+
+def ripemd160_encode(n):
+  m=hashlib.new('ripemd160')
+  m.update(n)
+  return m.hexdigest()
+
 def int_to_binary(n):
   r=''
   while n>0:
@@ -73,11 +80,14 @@ def decode(n):
 
 def hexpiecetobinary(hex):
   print hex
-  a=bin(int(hex,16))
+  try:
+    a=bin(int(hex,16))[2:].zfill(8)
+  except:
+    a=bin(int(hex.encode('hex'),16)).zfill(8)
   #a=a[2:len(a)]
-  g=8-len(a)
-  for i in range(0,g):
-    a='0'+a
+  #g=8-len(a)
+  #for i in range(0,g):
+  #  a='0'+a
   return a
 
 def hexdecode(n):
