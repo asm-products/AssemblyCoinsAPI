@@ -245,24 +245,3 @@ def create_transfer_tx(fromaddr, dest, fee, privatekey, coloramt, inputs, inputc
 
   response=pushtx(tx3)
   return response
-
-
-
-#def make_new_coin(fromaddr):
-pp='KydV3HiBAGbcYSwiAjHK7JfqjRCobAfwt3BZs5hAs8fm49Digo3d'
-pu='1PtJLQwcaGpyHRXd5d9ZXoA9mh3Hsnz42J'
-
-private_key= addresses.generate_privatekey('AssemblyMade')
-public_address=addresses.generate_publicaddress('AssemblyMade')
-dest= addresses.generate_publicaddress('AssemblyMade')
-print "dest is"+str(dest)
-inputs=[]
-unspen=unspent(public_address)
-inputs=unspen
-#declaration_tx(public_address, 0.00003, private_key, "I declare AssemblyCoins!")
-
-#create_transfer_tx(public_address, dest, 0.00005, private_key, 55, inputs, 433)
-
-#tx=make_raw_transaction(pub,0.000123,'1PtJLQwcaGpyHRXd5d9ZXoA9mh3Hsnz42J',0.0001)
-#tx2=sign_tx(tx,priv)
-#create_issuing_tx(public_address,dest,0.0001,private_key, 9001)
