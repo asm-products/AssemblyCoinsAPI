@@ -19,11 +19,6 @@ except:
 b58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 
-subkey_complexity=32
-
-standard_fee=0.0001
-minincrement=0.001  #min BTC per address (smallest addresses)
-increment_base=2
 
 def base58encode(n):
     result = ''
@@ -91,21 +86,6 @@ def generate_publicaddress(subkey1,subkey2):
     address=keyToAddr(secret_exponent)
     return address
 
-def check_address(public_address):
-    p='https://blockchain.info/q/addressbalance/'
-    p=p+public_address
-    h=requests.get(p)
-    if h.status_code==200:
-        return h.content
-    else:
-        return -1
-
-def check_address_subkeys(subkey1,subkey2):
-    global h
-    address=generate_publicaddress(subkey1,subkey2)
-
-    return check_address(address)
-
 def generate_receiving_address(destination_address):
     global g,r
     a='https://blockchain.info/api/receive?method=create&address='
@@ -120,7 +100,6 @@ def generate_receiving_address(destination_address):
         return "ERROR"
 
 
-    #'$receiving_address&callback=$callback_url
 
 class subkeypair:
     subkey1=''  #user
@@ -495,7 +474,7 @@ def make_info_script(info):
 
 #MAX 75 bytes in info
 #TX not being accepted by blockchain.info
-def send_with_info(fromaddr,amt,destination, fee, secretexponent, info):
+def send_with_info(fromaddr,amt,destination, fee, secretexponent, info, privkey):
    global outs,inp, tx, tx2,totalin,b,amounts, ins,unspentbtc, detx
    amounts=[]
    outs=[]
@@ -530,6 +509,8 @@ def send_with_info(fromaddr,amt,destination, fee, secretexponent, info):
    tx=serialize(detx)
 
    priv=hashlib.sha256(secretexponent).hexdigest()
+   if len(privkey)>3:
+     priv=privkey
    tx2=tx
    for i in range(0,outn-1):
       tx2=sign(tx2,i,priv)

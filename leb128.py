@@ -5,6 +5,14 @@ def ripemd160_encode(n):
   m.update(n)
   return m.hexdigest()
 
+def hash160(n):
+  m=ripemd160_encode(n)
+  return hashlib.sha256(m).hexdigest()
+
+def ripehash(n):
+  m=hashlib.sha256(n).hexdigest()
+  return ripemd160_encode(m)
+
 def int_to_binary(n):
   r=''
   while n>0:
@@ -19,6 +27,8 @@ def make_batches(n):
   b=int_to_binary(n)
   g=len(b)%7
   g=7-g
+  if g==7:
+    g=0
   for i in range(0,g):
     b='0'+str(b)
 

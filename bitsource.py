@@ -91,8 +91,6 @@ def color_address(publicaddress):
   hashed=a.content  #REPLACE THIS METHOD
 
 
-
-
 def read_tx(txhash):
   r=tx_lookup(txhash)
   m=''
@@ -154,6 +152,46 @@ def parse_colored_tx(metadata):
 
   return results
 
+def write_metadata(asset_quantities, otherdata):
+  #PLAINTEXT SCRIPT TO BE ENCODED INTO OP RETURN using Transaction.make_info_script
+  global encoded
+  #work in hex
+  result='4f410100' #OA + version 0100
+  assetcount=str(len(asset_quantities))
+  if len(assetcount)==1:
+    assetcount='0'+assetcount
+  result=result+assetcount
+
+  for asset in asset_quantities:
+
+    encoded=leb128.encode(asset)
+    j=''
+    print encoded
+    for x in encoded:
+      r=str(hex(int(x,2)))
+      if len(r)==3:
+        r='0'+r[2:3]
+      else:
+        r=r[2:len(r)]
+      j=j+r
+
+    result=result+j
+
+  length=hex(len(otherdata))
+  if len(length)==3:
+    length=length[2:len(length)]
+    length='0'+length
+  else:
+    length=length[2:len(length)]
+  result=result+length
+  result=result+otherdata.encode('hex')
+
+  return result
+  #result=result+"\x"+assetcount
+
+
+
+
 def oa_tx(txid, inputcolors):
   txdata=tx_lookup(txid)
   message=read_tx(txid)
@@ -211,6 +249,7 @@ def oa_tx(txid, inputcolors):
 
 def oa_in_block(n):
   messages=op_return_in_block(n)
+  global markerposition
   results=[]
   for x in messages:
     metadata=x[1]
@@ -251,7 +290,11 @@ def oa_in_block(n):
   return results
 
 def init():
-  print oa_in_block(301271)
+  #print oa_in_block(301271)
+  q=write_metadata([57,12443],'')
+  a=op_return_in_block(301271)[0][1]
+  print "is "+str(q)
+  print "should be "+str(a.encode('hex'))
 
 init()
 
